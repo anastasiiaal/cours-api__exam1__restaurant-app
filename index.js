@@ -12,6 +12,8 @@ const router = express.Router();
 app.use(bodyParser.json());
 app.use("/api", router);
 
+// add all model relations
+require('./src/models/index.js');
 require("./src/controllers")(app, router);
 
 app.use((error, req, res, next) => {

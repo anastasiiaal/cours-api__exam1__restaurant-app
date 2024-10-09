@@ -1,40 +1,4 @@
-/* const mongoose = require("mongoose");
-
-const Schema = new mongoose.Schema(
-  {
-    email: {
-      type: String,
-      required: true,
-    },
-    firstName: {
-      type: String,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    role: {
-      type: String,
-      enum: ["ADMIN", "USER"],
-      required: true,
-      default: "USER",
-    },
-  },
-  { timestamps: true }
-);
-Schema.methods.toJSON = function () {
-  return {
-    _id: this._id,
-    email: this.email,
-    firstName: this.firstName,
-    role: this.role,
-  };
-};
-
-module.exports = mongoose.model("User", Schema); */
-
-const { Sequelize, DataTypes } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const sequelize = require("../utils/sequelize");
 
 const User = sequelize.define(
@@ -55,12 +19,15 @@ const User = sequelize.define(
       unique: true,
     },
     role: {
-      type: DataTypes.ENUM(["USER", "ADMIN"]),
+      type: DataTypes.ENUM(["USER", "ADMIN", "OWNER"]),
       allowNull: false,
       defaultValue: "USER",
     },
   },
   {
+    indexes: [
+      { 'unique': true, fields: ['email'] },
+    ],
     defaultScope: {
       attributes: { exclude: ["password"] }, // Par défaut, on exclut le mot de passe
     },

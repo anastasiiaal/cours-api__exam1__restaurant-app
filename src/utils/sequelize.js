@@ -2,7 +2,7 @@ const { Sequelize } = require("sequelize");
 
 const sequelize = new Sequelize(process.env.MYSQL_URL, {
   logging: false,
-}); // Example for postgres
+});
 
 (async () => {
   try {
