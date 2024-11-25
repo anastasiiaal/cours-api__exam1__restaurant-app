@@ -19,6 +19,7 @@ const authSlice = createSlice({
     },
     loginSuccess: (state, action) => {
       const { accessToken } = action.payload;
+      console.log("Login success, token received:", accessToken);
       state.token = accessToken;
       state.isAuthenticated = true;
       localStorage.setItem("accessToken", accessToken);

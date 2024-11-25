@@ -8,7 +8,14 @@ const http = require("http");
 const app = express();
 const server = http.createServer(app);
 const router = express.Router();
+const cors = require("cors");
 
+// Enable CORS for all routes
+app.use(
+  cors({
+    origin: "http://localhost:5173"
+  })
+);
 app.use(bodyParser.json());
 app.use("/api", router);
 
