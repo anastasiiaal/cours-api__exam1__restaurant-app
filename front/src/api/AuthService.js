@@ -14,13 +14,19 @@ class AuthService {
     return response.data;
   }
 
-  async register(email, password) {
-    const response = await axiosInstance.post("/register", {
-      email,
-      password,
-    });
-
-    return response.data; // contient `token` et `user`
+  async register(name, email, password) {
+    try {
+      const response = await axiosInstance.post("/register", {
+        name,
+        email,
+        password,
+      });
+      console.log("Register response:", response.data);
+      return response.data; // contient `token` et `user`
+    } catch (error) {
+      console.error("Register error:", error.response?.data || error.message);
+      throw error.response?.data || { message: "Registration failed" };
+    }
   }
 }
 

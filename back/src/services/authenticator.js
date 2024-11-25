@@ -22,14 +22,18 @@ class Authenticator {
   }
   
   async create(body) {
-    
-    const user = await User.create({
-      email: body?.email,
-      name: body?.name,
-      password: await Hash.hash(body?.password), // hash password before storing
-    });
-
-    return user;
+    try {
+      const user = await User.create({
+        email: body?.email,
+        name: body?.name,
+        password: await Hash.hash(body?.password), // hash password before storing
+      });
+  
+      return user;
+    } catch (error) {
+      console.error("Error in authenticator.create:", error);
+      throw error;
+    }
   }
 }
 

@@ -29,12 +29,12 @@ module.exports = function (app, router) {
       res.status(500).send({ error: "Internal Server Error" });
     }
   });
-  
+
 
   router.post("/register", async (req, res) => {
     try {
       const user = await authenticator.create(req.body);
-  
+
       const token = await authenticator.authenticate(user.email, req.body.password);
       res.status(201).send(token);
     } catch (e) {
@@ -44,7 +44,7 @@ module.exports = function (app, router) {
         return res.status(400).send(e);
       }
 
-      res.status(500).send("Internal Server Error");
+      res.status(500).send({ error: "Internal Server Error" });
     }
   });
 };

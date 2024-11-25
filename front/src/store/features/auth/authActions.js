@@ -24,13 +24,18 @@ export const getUser = () => async (dispatch) => {
 };
 
 export const register =
-  ({ email, password }) =>
+  ({ name, email, password }) =>
   async (dispatch) => {
     try {
-      const { accessToken } = await authService.register(email, password);
-      await dispatch(registerSuccess({ accessToken }));
-      store.dispatch(getUser());
+      const response = await authService.register(name, email, password);
+      if (response?.accessToken) {
+        dispatch(registerSuccess({ accessToken: response.accessToken }));
+        store.dispatch(getUser());
+      } else {
+        console.error("Registration succeeded but no accessToken returned");
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Registration failed:", error);
+      alert(error.message || "Registration failed. Please try again.");
     }
   };
