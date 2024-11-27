@@ -4,8 +4,8 @@ const Dish = require('./Dish');
 const Order = require('./Order');
 
 // relations between models
-User.hasOne(Restaurant, { foreignKey: "ownerId" });
-Restaurant.belongsTo(User, { foreignKey: "ownerId" });
+User.hasOne(Restaurant, { as: "restaurant", foreignKey: "ownerId" });
+Restaurant.belongsTo(User, { as: "owner", foreignKey: "ownerId" });
 
 Restaurant.hasMany(Dish, { foreignKey: "restaurantId" });
 Dish.belongsTo(Restaurant, { foreignKey: "restaurantId" });

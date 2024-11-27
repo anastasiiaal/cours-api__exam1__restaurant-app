@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const authenticator = require("../services/authenticator");
 const Restaurant = require("../models/Restaurant");
+const User = require("../models/User");
 const requireRoles = require("../middlewares/require-role");
 
 const router = Router();
@@ -8,7 +9,15 @@ const router = Router();
 // get all restaurants
 router.get("/restaurants", async (req, res) => {
     try {
-        const restaurants = await Restaurant.findAll();
+        const restaurants = await Restaurant.findAll({
+            include: [
+                {
+                    model: User,
+                    as: "owner",
+                    attributes: ["name", "email"], // fetch only name and email of owner
+                },
+            ],
+        });
 
         res.status(200).send({
             message: "Restaurants retrieved successfully",
