@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminDashboard from "./pages/admin/Dashboard";
+import AddNew from "./pages/admin/AddNew";
 import Restaurants from "./pages/user/Restaurants";
 import DashboardLayout from "./layouts/DashboardLayout";
 import UserLayout from "./layouts/UserLayout";
@@ -33,7 +34,7 @@ export default function App () {
         {isAuthenticated && user?.role === "ADMIN" && (
           <Route path="/" element={<DashboardLayout />}>
             <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="add-new" element={<div><p>Form here</p></div>} />
+            <Route path="add-new" element={<AddNew />} />
             <Route index element={<Navigate to="/dashboard" />} />
           </Route>
         )}
