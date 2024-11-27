@@ -1,9 +1,26 @@
 const { Router } = require("express");
 const authenticator = require("../services/authenticator");
 const Restaurant = require("../models/Restaurant");
+const requireRoles = require("../middlewares/require-role");
 
 const router = Router();
 
+// get all restaurants
+router.get("/restaurants", async (req, res) => {
+    try {
+        const restaurants = await Restaurant.findAll();
+
+        res.status(200).send({
+            message: "Restaurants retrieved successfully",
+            data: restaurants,
+        });
+    } catch (error) {
+        console.error("Error fetching restaurants:", error);
+        res.status(500).send({ message: "Internal Server Error" });
+    }
+});
+
+// create owner account + its restaurant
 router.post("/create-owner", async (req, res) => {
     const { name, email, password, restaurantName, address, zipCode, city, image } = req.body;
 
