@@ -21,12 +21,13 @@ class Authenticator {
     };
   }
   
-  async create(body) {
+  async create({ name, email, password, role = "USER" }) {
     try {
       const user = await User.create({
-        email: body?.email,
-        name: body?.name,
-        password: await Hash.hash(body?.password), // hash password before storing
+        name,
+        email,
+        password: await Hash.hash(password), // hash password before storing
+        role, // set the user role
       });
   
       return user;
