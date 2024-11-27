@@ -1,11 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { logout } from "../store/features/auth/authSlice";
 
 const DashboardLayout = () => {
     const { user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleLogout = () => {
         dispatch(logout());
@@ -29,8 +30,8 @@ const DashboardLayout = () => {
 
     return (
         <div className="flex min-h-screen">
-            <aside className="w-64 bg-gray-800 text-white p-4">
-                <h2 className="text-xl font-bold mb-4">{user?.role} Panel</h2>
+            <aside className="w-64 bg-white text-gray-800 p-4">
+                <h2 className="text-xl font-bold mb-6">{user?.role} Panel</h2>
                 <nav>
                     <ul>
                         {menu.map((item) =>
@@ -38,7 +39,7 @@ const DashboardLayout = () => {
                                 <li
                                     key={item.label}
                                     onClick={item.action}
-                                    className="cursor-pointer py-2 mt-6 px-4 hover:bg-gray-700 rounded flex items-center space-x-3"
+                                    className="cursor-pointer py-2 font-bold mt-6 px-4 text-orange-500 hover:text-orange-700 rounded flex items-center space-x-3"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +61,10 @@ const DashboardLayout = () => {
                                 <li
                                     key={item.path}
                                     onClick={() => navigate(item.path)}
-                                    className="cursor-pointer py-2 px-4 hover:bg-gray-700 rounded"
+                                    className={`cursor-pointer font-bold py-2 px-4 rounded flex items-center space-x-3 mb-1 ${location.pathname === item.path
+                                            ? "bg-orange-500 text-white"
+                                            : "hover:bg-orange-500 hover:text-white"
+                                        }`}
                                 >
                                     {item.label}
                                 </li>
