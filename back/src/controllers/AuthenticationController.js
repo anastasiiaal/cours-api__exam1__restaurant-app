@@ -33,18 +33,25 @@ module.exports = function (app, router) {
 
   router.post("/register", async (req, res) => {
     try {
-      const user = await authenticator.create(req.body);
-
-      const token = await authenticator.authenticate(user.email, req.body.password);
-      res.status(201).send(token);
-    } catch (e) {
-      console.error(e);
-
-      if (e.email || e.password) {
-        return res.status(400).send(e);
+      const { email, name, password } = req.body;
+  
+      if (!email || !name || !password) {
+        return res.status(400).send({ message: "All fields are required" });
       }
 
-      res.status(500).send({ error: "Internal Server Error" });
+      const user = await authenticator.create(req.body);
+
+      const { accessToken } = await authenticator.authenticate(user.email, password);
+
+      return res.status(201).send({ accessToken });
+    } catch (e) {
+      console.error("Register error:", e);
+  
+      if (e.name === "SequelizeUniqueConstraintError") {
+        return res.status(400).send({ message: "Email already taken" });
+      }
+  
+      return res.status(500).send({ message: "Internal Server Error" });
     }
   });
 };

@@ -29,14 +29,17 @@ export const register =
   async (dispatch) => {
     try {
       const response = await authService.register(name, email, password);
-      if (response?.accessToken) {
-        dispatch(registerSuccess({ accessToken: response.accessToken }));
-        store.dispatch(getUser());
-      } else {
-        console.error("Registration succeeded but no accessToken returned");
+
+      const { accessToken } = response || {};
+
+      if (!accessToken) {
+        throw new Error("This email seems to have been taken");
       }
+
+      await dispatch(registerSuccess({ accessToken }));
+      await store.dispatch(getUser());
     } catch (error) {
-      console.error("Registration failed:", error);
-      alert(error.message || "Registration failed. Please try again.");
+      console.error("Registration failed:", error.message);
+      throw new Error(error.message || "Registration failed. Please try again.");
     }
   };
