@@ -10,7 +10,8 @@ export const login =
       await dispatch(loginSuccess({ accessToken }));
       store.dispatch(getUser());
     } catch (error) {
-      console.log(error);
+      console.error("Login failed:", error);
+      throw new Error(error?.response?.data?.message || "Invalid email or password");
     }
   };
 
