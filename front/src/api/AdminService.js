@@ -7,7 +7,8 @@ class AdminService {
             return response.data;
         } catch (error) {
             console.error("AdminService error:", error.response?.data || error.message);
-            throw error.response?.data || { message: "Failed to create owner and restaurant" };
+            // pass the backend error message to the frontend
+            throw new Error(error.response?.data?.message || "Failed to create owner and restaurant");
         }
     }
 }

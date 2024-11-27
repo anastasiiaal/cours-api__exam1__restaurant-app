@@ -16,6 +16,11 @@ export default function AddNew() {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
 
+    // check if all fields are filled
+    const isFormValid = () => {
+        return Object.values(formData).every((field) => field.trim() !== "");
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -27,8 +32,8 @@ export default function AddNew() {
         setSuccess(null);
 
         try {
-            await AdminService.createOwnerWithRestaurant(formData);
-            setSuccess("Owner and restaurant created successfully!");
+            const response = await AdminService.createOwnerWithRestaurant(formData);
+            setSuccess(response.message || "Owner and restaurant created successfully!");
             setFormData({
                 name: "",
                 email: "",
@@ -39,17 +44,16 @@ export default function AddNew() {
                 city: "",
                 image: "",
             });
-        } catch (err) {
-            setError(err.message || "Something went wrong.");
+        } catch (e) {
+            setError("Email already used. Try another one.");
         }
     };
-
 
     return (
         <div>
             <form
                 onSubmit={handleSubmit}
-                className=" w-full max-w-lg"
+                className="w-full max-w-lg"
             >
                 <h2 className="text-2xl font-bold text-center mb-6">
                     Create New Owner & Restaurant
@@ -72,7 +76,6 @@ export default function AddNew() {
                         value={formData.name}
                         onChange={handleChange}
                         placeholder="Owner's Full Name"
-                        className="w-full px-4 py-2 border border-gray-300 rounded"
                     />
                 </div>
 
@@ -84,7 +87,6 @@ export default function AddNew() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="Owner's Email"
-                        className="w-full px-4 py-2 border border-gray-300 rounded"
                     />
                 </div>
 
@@ -96,7 +98,6 @@ export default function AddNew() {
                         value={formData.password}
                         onChange={handleChange}
                         placeholder="Password"
-                        className="w-full px-4 py-2 border border-gray-300 rounded"
                     />
                 </div>
 
@@ -108,7 +109,6 @@ export default function AddNew() {
                         value={formData.restaurantName}
                         onChange={handleChange}
                         placeholder="Restaurant's Name"
-                        className="w-full px-4 py-2 border border-gray-300 rounded"
                     />
                 </div>
 
@@ -120,7 +120,6 @@ export default function AddNew() {
                         value={formData.address}
                         onChange={handleChange}
                         placeholder="Restaurant's Address"
-                        className="w-full px-4 py-2 border border-gray-300 rounded"
                     />
                 </div>
 
@@ -132,7 +131,6 @@ export default function AddNew() {
                         value={formData.zipCode}
                         onChange={handleChange}
                         placeholder="ZIP Code"
-                        className="w-full px-4 py-2 border border-gray-300 rounded"
                     />
                 </div>
 
@@ -144,7 +142,6 @@ export default function AddNew() {
                         value={formData.city}
                         onChange={handleChange}
                         placeholder="City"
-                        className="w-full px-4 py-2 border border-gray-300 rounded"
                     />
                 </div>
 
@@ -156,15 +153,18 @@ export default function AddNew() {
                         value={formData.image}
                         onChange={handleChange}
                         placeholder="Restaurant Image URL"
-                        className="w-full px-4 py-2 border border-gray-300 rounded"
                     />
                 </div>
 
                 <button
                     type="submit"
-                    className="w-full bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700 transition"
+                    className={`w-full py-2 px-4 rounded transition ${isFormValid()
+                            ? "bg-orange-600 text-white hover:bg-orange-700"
+                            : "bg-gray-300 hover:bg-gray-300 text-gray-800 cursor-not-allowed"
+                        }`}
+                    disabled={!isFormValid()}
                 >
-                    Create Owner & Restaurant
+                    Create restaurant account
                 </button>
             </form>
         </div>
