@@ -13,6 +13,10 @@ const cors = require("cors");
 const requireAuth = require("./src/middlewares/require-auth");
 const requireRole = require("./src/middlewares/require-role");
 
+const AdminController = require("./src/controllers/AdminController");
+const ClientController = require("./src/controllers/ClientController");
+
+
 // Enable CORS for all routes
 app.use(
   cors({
@@ -27,9 +31,9 @@ app.use("/api", router);
 require('./src/models/index.js');
 require("./src/controllers")(app, router);
 
-// admin routes (use requireAuth and requireRole to restrict access to admins)
-const AdminController = require("./src/controllers/AdminController");
+// routes (use requireAuth and requireRole to restrict access)
 router.use("/admin", requireAuth, requireRole(["ADMIN"]), AdminController);
+router.use("/user", requireAuth, ClientController);
 
 // error handling middleware
 app.use((error, req, res, next) => {

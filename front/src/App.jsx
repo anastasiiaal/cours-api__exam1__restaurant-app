@@ -50,6 +50,7 @@ export default function App () {
 
         {isAuthenticated && user?.role === "USER" && (
           <Route path="/" element={<UserLayout />}>
+            <Route index element={<Navigate to="restaurants" />} />
             <Route path="restaurants" element={<Restaurants />} />
             <Route path="profile" element={<Profile />} />
             <Route path="orders" element={<div>Orders Page</div>} />
