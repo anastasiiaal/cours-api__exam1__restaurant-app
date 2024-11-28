@@ -31,6 +31,7 @@ export default function AdminDashboard() {
             <th className="py-2 px-4 text-left">Restaurant Name</th>
             <th className="py-2 px-4 text-left">Owner Name</th>
             <th className="py-2 px-4 text-left">Owner Email</th>
+            <th className="py-2 px-4 text-left"></th>
           </tr>
         </thead>
         <tbody>
@@ -42,6 +43,8 @@ export default function AdminDashboard() {
               <td className="py-2 px-4">{restaurant.name}</td>
               <td className="py-2 px-4">{restaurant.owner.name}</td>
               <td className="py-2 px-4"><a href={"mailto:" + restaurant.owner.email} className="hover:text-orange-600 transition">{restaurant.owner.email}</a></td>
+              {/* @TODO : create a restaurants/delete/$id back route & function on front */}
+              <td className="py-2 px-4"><button className="w-full bg-white text-orange-600 border border-orange-600 hover:bg-red-600 hover:text-white py-2 px-4 rounded transition">Delete</button></td>
             </tr>
           ))}
         </tbody>
