@@ -14,6 +14,7 @@ const requireAuth = require("./src/middlewares/require-auth");
 const requireRole = require("./src/middlewares/require-role");
 
 const AdminController = require("./src/controllers/AdminController");
+const OwnerController = require("./src/controllers/OwnerController");
 const ClientController = require("./src/controllers/ClientController");
 
 
@@ -33,6 +34,7 @@ require("./src/controllers")(app, router);
 
 // routes (use requireAuth and requireRole to restrict access)
 router.use("/admin", requireAuth, requireRole(["ADMIN"]), AdminController);
+router.use("/owner", requireAuth, requireRole(["OWNER"]), OwnerController);
 router.use("/user", requireAuth, ClientController);
 
 // error handling middleware
