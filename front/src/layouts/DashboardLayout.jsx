@@ -22,7 +22,7 @@ const DashboardLayout = () => {
         : user?.role === "OWNER"
             ? [
                 { label: "My Restaurant", path: "/dashboard" },
-                { label: "Dishes", path: "/dishes" },
+                { label: "My dishes", path: "/dishes" },
                 { label: "Orders", path: "/orders" },
                 { label: "Log Out", path: "logout", action: handleLogout },
             ]
