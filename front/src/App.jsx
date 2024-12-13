@@ -15,6 +15,7 @@ import OwnerDishes from "./pages/owner/Dishes";
 import AddDish from "./pages/owner/AddDish";
 import UserLayout from "./layouts/UserLayout";
 import Restaurants from "./pages/user/Restaurants";
+import RestaurantDetails from "./pages/user/RestaurantDetails";
 import Profile from "./pages/user/Profile";
 
 export default function App () {
@@ -56,6 +57,7 @@ export default function App () {
           <Route path="/" element={<UserLayout />}>
             <Route index element={<Navigate to="restaurants" />} />
             <Route path="restaurants" element={<Restaurants />} />
+            <Route path="/restaurants/:id" element={<RestaurantDetails />} />
             <Route path="profile" element={<Profile />} />
             <Route path="orders" element={<div>Orders Page</div>} />
           </Route>

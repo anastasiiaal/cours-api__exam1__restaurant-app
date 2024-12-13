@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import UserService from "../../api/UserService";
+import { Link } from "react-router-dom";
+
 
 export default function Restaurants() {
     const [restaurants, setRestaurants] = useState([]);
@@ -28,7 +30,7 @@ export default function Restaurants() {
                             key={restaurant.id}
                             className="restaurant-item relative bg-gray-800 rounded-lg overflow-hidden shadow-lg transition"
                         >
-                            <a href="">
+                            <Link to={`/restaurants/${restaurant.id}`}>
                                 <div
                                     className="absolute inset-0 bg-cover bg-center transition"
                                     style={{ backgroundImage: `url(${restaurant.image})` }}
@@ -39,16 +41,13 @@ export default function Restaurants() {
                                     <h2 className="text-xl font-bold">{restaurant.name}</h2>
                                     <p className="text-sm">{restaurant.city}</p>
                                 </div>
-                            </a>
-                            
+                            </Link>
                         </li>
                     ))}
                 </ul>
             ) : (
                 <p>No restaurants available.</p>
             )}
-            
         </div>
-
     );
 }
