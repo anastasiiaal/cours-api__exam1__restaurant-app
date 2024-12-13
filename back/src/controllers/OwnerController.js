@@ -26,8 +26,18 @@ router.get("/restaurant", async (req, res) => {
 // fetch all restaurant dishes
 router.get("/dishes", async (req, res) => {
     try {
+        const ownerId = req.user.id;
+
+        const restaurant = await Restaurant.findOne({
+            where: { ownerId },
+        });
+
+        if (!restaurant) {
+            return res.status(404).send({ message: "Restaurant not found" });
+        }
+
         const dishes = await Dish.findAll({
-            where: { restaurantId: req.user.restaurantId },
+            where: { restaurantId: restaurant.id },
         });
 
         res.status(200).send(dishes);
