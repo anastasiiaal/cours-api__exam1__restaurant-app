@@ -6,20 +6,20 @@ export default function SimpleUserLayout() {
     const menu = [
         { label: "Restaurants", path: "/restaurants" },
         { label: "Profile", path: "/profile" },
-        { label: "Past Orders", path: "/orders" },
+        { label: "Cart", path: "/orders" },
     ];
 
     return (
         <div className="flex flex-col min-h-screen">
-            <header className="bg-orange-600 text-white py-4 px-8 flex justify-between">
-                <a className="hidden sm:block text-xl font-bold" href="/">Uber Eats</a>
+            <header className="bg-orange-600 text-white py-5 px-8 flex justify-between">
+                <a className="hidden sm:block text-2xl font-bold" href="/">Uber Eats</a>
                 <nav className="w-full sm:w-auto">
-                    <ul className="flex space-x-4 justify-center">
+                    <ul className="flex space-x-12 justify-center text-lg">
                         {menu.map((item) => (
                             <li
                                 key={item.path}
                                 onClick={() => navigate(item.path)}
-                                className="cursor-pointer hover:underline"
+                                className="cursor-pointer hover:underline font-semibold"
                             >
                                 {item.label}
                             </li>
