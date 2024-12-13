@@ -12,9 +12,9 @@ export default function SimpleUserLayout() {
     return (
         <div className="flex flex-col min-h-screen">
             <header className="bg-orange-600 text-white py-4 px-8 flex justify-between">
-                <h1 className="text-xl font-bold">User Dashboard</h1>
-                <nav>
-                    <ul className="flex space-x-4">
+                <a className="hidden sm:block text-xl font-bold" href="/">Uber Eats</a>
+                <nav className="w-full sm:w-auto">
+                    <ul className="flex space-x-4 justify-center">
                         {menu.map((item) => (
                             <li
                                 key={item.path}
@@ -28,7 +28,7 @@ export default function SimpleUserLayout() {
                 </nav>
             </header>
 
-            <main className="flex-1 bg-gray-100 p-8">
+            <main>
                 <Outlet />
             </main>
         </div>
