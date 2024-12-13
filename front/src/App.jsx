@@ -7,12 +7,14 @@ import {
 import { useSelector } from "react-redux";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import AdminDashboard from "./pages/admin/Dashboard";
-import OwnerDashboard from "./pages/owner/Dashboard";
-import AddNew from "./pages/admin/AddNew";
-import Restaurants from "./pages/user/Restaurants";
 import DashboardLayout from "./layouts/DashboardLayout";
+import AdminDashboard from "./pages/admin/Dashboard";
+import AddNew from "./pages/admin/AddNew";
+import OwnerDashboard from "./pages/owner/Dashboard";
+import OwnerDishes from "./pages/owner/Dishes";
+import AddDish from "./pages/owner/AddDish";
 import UserLayout from "./layouts/UserLayout";
+import Restaurants from "./pages/user/Restaurants";
 import Profile from "./pages/user/Profile";
 
 export default function App () {
@@ -43,7 +45,8 @@ export default function App () {
         {isAuthenticated && user?.role === "OWNER" && (
           <Route path="/" element={<DashboardLayout />}>
             <Route path="dashboard" element={<OwnerDashboard />} />
-            <Route path="dishes" element={<div><p>Dishes Here</p></div>} />
+            <Route path="dishes" element={<OwnerDishes />} />
+            <Route path="dishes/new" element={<AddDish />} />
             <Route path="orders" element={<div><p>Orders Here</p></div>} />
             <Route index element={<Navigate to="/dashboard" />} />
           </Route>
