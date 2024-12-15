@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import UserService from "../../api/UserService";
+import { useSelector } from "react-redux";
 
 export default function RestaurantDetails() {
     const { id } = useParams();
@@ -21,6 +22,37 @@ export default function RestaurantDetails() {
 
         fetchRestaurant();
     }, [id]);
+
+    const { user } = useSelector((state) => state.auth);
+    const userId = user?.id || "guest";
+
+    function addToCart(dish) {
+        if (!userId) {
+            alert("User is not logged in. Cannot add to cart.");
+            return;
+        }
+    
+        const cartKey = `cart_${userId}`;
+        let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    
+        const existingItem = cart.find((item) => item.dishId === dish.id);
+    
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                dishId: dish.id,
+                restaurantId: dish.restaurantId,
+                name: dish.name,
+                image: dish.image,
+                price: dish.price,
+                quantity: 1,
+            });
+        }
+
+        localStorage.setItem(cartKey, JSON.stringify(cart));
+        alert(`${dish.name} has been added to the cart!`);
+    }
 
     if (loading) {
         return <p>Loading...</p>;
@@ -58,7 +90,10 @@ export default function RestaurantDetails() {
                                 <h3 className="text-lg font-bold">{dish.name}</h3>
                                 <p className="text-gray-600">{dish.description}</p>
                                 <p className="text-orange-600 font-bold">{dish.price} €</p>
-                                <button className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 mt-2">
+                                <button 
+                                    onClick={() => addToCart(dish)}
+                                    className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 mt-2"
+                                >
                                     Add to cart
                                 </button>
                             </li>
