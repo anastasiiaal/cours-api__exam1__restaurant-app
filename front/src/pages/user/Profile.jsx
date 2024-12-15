@@ -56,8 +56,8 @@ export default function Profile() {
                 </div>
             </div>
 
-            <div className="container mx-auto px-4 py-8 flex justify-between">
-                <div className="col bg-white p-6 shadow rounded w-[48%]">
+            <div className="container mx-auto px-4 py-8">
+                <div className="col bg-white p-6 shadow rounded">
                     <h3 className="text-lg font-bold mb-4">Edit Profile</h3>
 
                     {successMessage && (
@@ -101,10 +101,6 @@ export default function Profile() {
                     >
                         Save Changes
                     </button>
-                </div>
-
-                <div className="col bg-white p-6 shadow rounded w-[48%]">
-                    mdp ici
                 </div>
             </div>
         </>
