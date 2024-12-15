@@ -6,5 +6,7 @@ const ClientHandlers = require("../handlers/ClientHandlers");
 router.get("/restaurants", ClientHandlers.getAllRestaurants);
 // fetch all data & dishes of a restaurant
 router.get("/restaurants/:id", ClientHandlers.getRestaurantWithDishes);
+// update personal data
+router.post("/me", ClientHandlers.updatePersonalData);
 
 module.exports = router;

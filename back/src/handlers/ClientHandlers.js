@@ -1,5 +1,6 @@
 const Restaurant = require("../models/Restaurant");
 const Dish = require("../models/Dish");
+const User = require("../models/User");
 
 module.exports = {
     // Fetch all restaurants for the user
@@ -46,6 +47,56 @@ module.exports = {
         } catch (error) {
             console.error("Error fetching restaurant with dishes:", error);
             res.status(500).send({ message: "Internal Server Error" });
+        }
+    },
+
+    // update account data
+    async updatePersonalData(req, res) {
+        // fetch current user's ID from the authenticated token
+        const userId = req.user.id;
+        const { name, email, password } = req.body;
+    
+        try {
+            if (!name && !email && !password) {
+                return res.status(400).send({
+                    message: "Please provide at least one field to update",
+                });
+            }
+
+            const user = await User.findByPk(userId);
+            if (!user) {
+                return res.status(404).send({
+                    message: "User not found",
+                });
+            }
+
+            // update fields only if provided
+            if (name) user.name = name;
+            if (email) user.email = email;
+            if (password) user.password = await Hash.hash(password);
+
+            await user.save();
+
+            res.status(200).send({
+                message: "Personal data updated successfully",
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                },
+            });
+        } catch (error) {
+            console.error("Error updating personal data:", error);
+            // handle unique constraint violation for email
+            if (error.name === "SequelizeUniqueConstraintError") {
+                return res.status(400).send({
+                    message: "Email already exists",
+                });
+            }
+
+            res.status(500).send({
+                message: "Internal Server Error",
+            });
         }
     }
 }
