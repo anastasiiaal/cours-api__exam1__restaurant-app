@@ -20,6 +20,16 @@ class UserService {
             throw new Error(error.response?.data?.message || "Failed to fetch restaurant and dishes");
         }
     }
+
+    async updateProfile(data) {
+        try {
+            const response = await axiosInstance.post("/user/me", data);
+            return response.data;
+        } catch (error) {
+            console.error("Error updating profile:", error.response?.data || error.message);
+            throw new Error(error.response?.data?.message || "Failed to update profile.");
+        }
+    }
 }
 
 export default new UserService();
