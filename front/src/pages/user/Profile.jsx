@@ -12,9 +12,11 @@ export default function Profile () {
     };
 
     return (
-        <div>
-            <h2>Hello {user?.email}</h2>
-            <button onClick={handleLogout}>Logout</button>
+        <div className="container mx-auto px-4 py-8">
+            <div className="flex justify-between items-center">
+                <h2 className="text-xl font-bold">Hello {user?.name}!</h2>
+                <button className="w-40" onClick={handleLogout}>Log out</button>
+            </div>
         </div>
     );
 };
