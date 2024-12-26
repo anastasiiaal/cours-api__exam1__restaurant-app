@@ -24,32 +24,46 @@ export default function RestaurantDetails() {
     }, [id]);
 
     const { user } = useSelector((state) => state.auth);
-    const userId = user?.id || "guest";
 
-    function addToCart(dish) {
+    function addToCart(dish, restaurantId) {
+        const userId = user?.id;
+    
         if (!userId) {
             alert("User is not logged in. Cannot add to cart.");
             return;
         }
     
         const cartKey = `cart_${userId}`;
-        let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+        let cart = JSON.parse(localStorage.getItem(cartKey)) || {};
+
+        // check if this restaurant already exists in the cart
+        if (!cart[restaurantId]) {
+            cart[restaurantId] = {
+                restaurantId: restaurantId,
+                items: [],
+            };
+        }
     
-        const existingItem = cart.find((item) => item.dishId === dish.id);
+        // check if the dish is already in the cart for this restaurant
+        const existingItem = cart[restaurantId].items.find(
+            (item) => item.dishId === dish.id
+        );
     
         if (existingItem) {
+            // increase nb if dish already exists
             existingItem.quantity += 1;
         } else {
-            cart.push({
+            // else add new dish to the cart
+            cart[restaurantId].items.push({
                 dishId: dish.id,
-                restaurantId: dish.restaurantId,
                 name: dish.name,
                 image: dish.image,
                 price: dish.price,
                 quantity: 1,
             });
         }
-
+    
+        // save updated cart back to localStorage
         localStorage.setItem(cartKey, JSON.stringify(cart));
         alert(`${dish.name} has been added to the cart!`);
     }
@@ -91,7 +105,7 @@ export default function RestaurantDetails() {
                                 <p className="text-gray-600">{dish.description}</p>
                                 <p className="text-orange-600 font-bold">{dish.price} €</p>
                                 <button 
-                                    onClick={() => addToCart(dish)}
+                                    onClick={() => addToCart(dish, restaurant.id)}
                                     className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 mt-2"
                                 >
                                     Add to cart
