@@ -21,6 +21,16 @@ class AdminService {
             throw new Error(error.response?.data?.message || "Failed to fetch restaurants");
         }
     }
+
+    async deleteRestaurant(id) {
+        try {
+            const response = await axiosInstance.delete(`/admin/restaurants/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error deleting restaurant:", error.response?.data || error.message);
+            throw new Error(error.response?.data?.message || "Failed to delete restaurant");
+        }
+    }
 }
 
 export default new AdminService();
