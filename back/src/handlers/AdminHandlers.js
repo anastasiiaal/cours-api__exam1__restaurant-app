@@ -85,4 +85,34 @@ module.exports = {
             res.status(500).send({ message: "Internal Server Error" });
         }
     },
+
+    // deletes a restaurant and all its related data
+    async deleteRestaurant(req, res) {
+        const { id } = req.params;
+
+        try {
+            // Find the restaurant by ID
+            const restaurant = await Restaurant.findByPk(id);
+
+            if (!restaurant) {
+                return res.status(404).send({ message: "Restaurant not found" });
+            }
+
+            // Check if the restaurant has an owner
+            const owner = await User.findByPk(restaurant.ownerId);
+
+            // Delete the restaurant (cascade deletes dishes and orders due to relations)
+            await restaurant.destroy();
+
+            // Delete the owner
+            if (owner) {
+                await owner.destroy();
+            }
+
+            res.status(200).send({ message: "Restaurant, owner, dishes, and orders deleted successfully" });
+        } catch (error) {
+            console.error("Error deleting restaurant:", error);
+            res.status(500).send({ message: "Internal Server Error" });
+        }
+    },
 };
