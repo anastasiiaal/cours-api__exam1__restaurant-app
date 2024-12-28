@@ -8,5 +8,7 @@ router.get("/restaurants", ClientHandlers.getAllRestaurants);
 router.get("/restaurants/:id", ClientHandlers.getRestaurantWithDishes);
 // update personal data
 router.post("/me", ClientHandlers.updatePersonalData);
+// create new order out of cart items
+router.post("/new-order", ClientHandlers.addNewOrder);
 
 module.exports = router;

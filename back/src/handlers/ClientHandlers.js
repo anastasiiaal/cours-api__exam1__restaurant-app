@@ -1,6 +1,7 @@
 const Restaurant = require("../models/Restaurant");
 const Dish = require("../models/Dish");
 const User = require("../models/User");
+const Order = require("../models/Order");
 
 module.exports = {
     // Fetch all restaurants for the user
@@ -55,7 +56,7 @@ module.exports = {
         // fetch current user's ID from the authenticated token
         const userId = req.user.id;
         const { name, email, password } = req.body;
-    
+
         try {
             if (!name && !email && !password) {
                 return res.status(400).send({
@@ -97,6 +98,39 @@ module.exports = {
             res.status(500).send({
                 message: "Internal Server Error",
             });
+        }
+    },
+
+    // create new order out of cart items
+    async addNewOrder(req, res) {
+        const { restaurantId, items, total } = req.body;
+
+        try {
+            if (!restaurantId || !items || !total) {
+                return res.status(400).send({ message: "Missing required fields" });
+            }
+
+            // check that restaurant exists
+            const restaurant = await Restaurant.findByPk(restaurantId);
+            if (!restaurant) {
+                return res.status(404).send({ message: "Restaurant not found" });
+            }
+
+            // create order
+            const order = await Order.create({
+                userId: req.user.id,
+                restaurantId,
+                items: JSON.stringify(items),
+                total,
+            });
+
+            res.status(201).send({
+                message: "Order created successfully",
+                order,
+            });
+        } catch (error) {
+            console.error("Error creating order:", error);
+            res.status(500).send({ message: "Internal Server Error" });
         }
     }
 }
