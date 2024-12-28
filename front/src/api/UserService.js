@@ -41,6 +41,16 @@ class UserService {
             throw new Error(error.response?.data?.message || "Failed to create order");
         }
     }
+
+    async getMyOrders() {
+        try {
+            const response = await axiosInstance.get("/user/orders");
+            return response.data.data;
+        } catch (error) {
+            console.error("Error fetching orders:", error.response?.data || error.message);
+            throw new Error(error.response?.data?.message || "Failed to fetch orders");
+        }
+    }
 }
 
 export default new UserService();

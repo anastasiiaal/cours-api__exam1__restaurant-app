@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../store/features/auth/authSlice";
 import UserService from "../../api/UserService";
+import PastOrders from "./widget/PastOrders";
 
 export default function Profile() {
     const { user, token } = useSelector((state) => state.auth);
@@ -56,8 +57,11 @@ export default function Profile() {
                 </div>
             </div>
 
-            <div className="container mx-auto px-4 py-8">
-                <div className="col bg-white p-6 shadow rounded">
+            <div className="container mx-auto flex flex-wrap justify-between items-start px-4 py-8">
+                <div className="col w-full md:w-[49%] -mt-[44px]">
+                    <PastOrders />
+                </div>
+                <div className="col w-full mt-5 md:w-[49%] md:mt-0 bg-white p-6 shadow rounded">
                     <h3 className="text-lg font-bold mb-4">Edit Profile</h3>
 
                     {successMessage && (
