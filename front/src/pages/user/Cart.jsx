@@ -5,6 +5,9 @@ import UserService from "../../api/UserService";
 export default function Cart() {
     const [cart, setCart] = useState({});
     const [restaurantNames, setRestaurantNames] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
     const { user } = useSelector((state) => state.auth);
 
     // fetch cart data and restaurant names to display
@@ -55,9 +58,47 @@ export default function Cart() {
     // calculate total price for a restaurant's dishes
     const calculateTotal = (items) => items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
+    // create order for a specific restaurant
+    const placeOrder = async (restaurantId) => {
+        setLoading(true);
+        setErrorMessage("");
+        setSuccessMessage("");
+
+        try {
+            const items = cart[restaurantId].items;
+            const total = calculateTotal(items);
+
+            // calling post API end
+            await UserService.createOrder({
+                restaurantId,
+                items,
+                total,
+            });
+
+            // clen up the after cart
+            const updatedCart = { ...cart };
+            delete updatedCart[restaurantId];
+            setCart(updatedCart);
+            localStorage.setItem(`cart_${user.id}`, JSON.stringify(updatedCart));
+
+            setSuccessMessage(`Order placed successfully for ${restaurantNames[restaurantId]}!`);
+        } catch (error) {
+            setErrorMessage(error.message || "Failed to place order.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="container mx-auto px-4 py-8">
             <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
+
+            {loading && <p className="text-orange-600">Processing your order...</p>}
+            {errorMessage && <p className="text-red-600 bg-red-100 p-3 rounded mb-4">{errorMessage}</p>}
+            {successMessage && (
+                <p className="text-green-600 bg-green-100 p-3 rounded mb-4">{successMessage}</p>
+            )}
+
             {Object.keys(cart).length === 0 ? (
                 <p>Your cart is empty!</p>
             ) : (
@@ -102,7 +143,9 @@ export default function Cart() {
                                 Total: €{calculateTotal(cart[restaurantId].items).toFixed(2)}
                             </h2>
                             <button
-                                className="bg-orange-600 w-60 text-white px-6 py-2 rounded hover:bg-orange-700 mt-4"
+                                onClick={() => placeOrder(restaurantId)}
+                                disabled={loading}
+                                className="bg-orange-600 w-60 text-white px-6 py-2 rounded hover:bg-orange-700 mt-4 disabled:bg-gray-400 disabled:cursor-not-allowed"
                             >
                                 Order
                             </button>

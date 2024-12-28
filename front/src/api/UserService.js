@@ -30,6 +30,17 @@ class UserService {
             throw new Error(error.response?.data?.message || "Failed to update profile.");
         }
     }
+
+    async createOrder(orderData) {
+        try {
+            const response = await axiosInstance.post("/user/new-order", orderData);
+            console.log("Order response:", response.data);
+            return response.data;
+        } catch (error) {
+            console.error("Error creating order:", error.response?.data || error.message);
+            throw new Error(error.response?.data?.message || "Failed to create order");
+        }
+    }
 }
 
 export default new UserService();
