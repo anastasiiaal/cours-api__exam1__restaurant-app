@@ -10,5 +10,7 @@ router.get("/restaurants/:id", ClientHandlers.getRestaurantWithDishes);
 router.post("/me", ClientHandlers.updatePersonalData);
 // create new order out of cart items
 router.post("/new-order", ClientHandlers.addNewOrder);
+// get a list of past orders to dsplay
+router.get("/orders", ClientHandlers.getMyOrders)
 
 module.exports = router;
