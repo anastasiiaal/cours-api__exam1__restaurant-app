@@ -40,6 +40,26 @@ class OwnerService {
             throw error;
         }
     }
+
+    async fetchDishById(id) {
+        try {
+            const response = await axiosInstance.get(`/owner/dish/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching your dish:", error);
+            throw error;
+        }
+    }
+
+    async updateDishById(id, data) {
+        try {
+            const response = await axiosInstance.patch(`/owner/dish/${id}`, data);
+            return response.data;
+        } catch (error) {
+            console.error("Error editing your dish:", error);
+            throw error;
+        }
+    }
 }
 
 export default new OwnerService();

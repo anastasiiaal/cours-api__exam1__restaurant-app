@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"
 import OwnerService from "../../api/OwnerService";
+import { Link } from "react-router-dom";
 
 export default function Dishes() {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ export default function Dishes() {
         const fetchDishes = async () => {
             try {
                 const data = await OwnerService.getDishes();
-                setDishes(data); // Assuming the API returns an array of dishes
+                setDishes(data);
             } catch (error) {
                 console.error("Error fetching dishes:", error);
             } finally {
@@ -47,6 +48,9 @@ export default function Dishes() {
                             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 text-white">
                                 <h2 className="text-lg font-bold">{dish.name}</h2>
                                 <p>{dish.price.toFixed(2)}€</p>
+                            </div>
+                            <div className="absolute top-0 right-0 p-4 flex">
+                                <Link className="button" to={`/dishes/${dish.id}`}>Edit</Link>
                             </div>
                         </div>
                     ))}
