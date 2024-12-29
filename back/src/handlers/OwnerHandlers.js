@@ -101,6 +101,38 @@ module.exports = {
         }
     },
 
+    // delete one dish
+    async deleteDishById(req, res) {
+        const { id } = req.params;
+
+        try {
+            const dish = await Dish.findByPk(id, {
+                include: {
+                    model: Restaurant,
+                    attributes: ["ownerId"],
+                },
+            });
+
+            if (!dish) {
+                return res.status(404).send({ message: "Dish not found" });
+            }
+    
+            // check if current user owns the restaurant with this dish
+            if (dish.Restaurant.ownerId !== req.user.id) {
+                return res.status(403).send({ message: "Access forbidden" });
+            }
+    
+            // delete the dish!
+            await dish.destroy();
+    
+            res.status(200).send({ message: "Dish deleted successfully" });
+        } catch (error) {
+            console.error("Error deleting dish:", error);
+            res.status(500).send({ message: "Internal Server Error" });
+        }
+    },
+
+    // edit one dish
     async updateDishById(req, res) {
         const { id } = req.params;
         const { name, image, price, description } = req.body;

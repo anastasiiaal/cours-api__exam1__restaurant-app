@@ -13,6 +13,8 @@ router.post("/dish/new", OwnerHandlers.createNewDish);
 router.get("/dish/:id", OwnerHandlers.fetchDishById);
 // edit one dish
 router.patch("/dish/:id", OwnerHandlers.updateDishById);
+// delete one dish
+router.delete("/dish/:id", OwnerHandlers.deleteDishById);
 // fetch all restaurant orders
 router.get("/orders", OwnerHandlers.fetchRestaurantOrders);
 
