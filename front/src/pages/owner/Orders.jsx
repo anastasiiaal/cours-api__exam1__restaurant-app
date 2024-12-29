@@ -19,6 +19,19 @@ export default function Orders() {
         fetchOrders();
     }, []);
 
+    // handle order delete
+    const handleDelete = async (id) => {
+        try {
+            if (!window.confirm("Are you sure you want to delete this order?")) return;
+            await OwnerService.deleteOrderById(id);
+
+            // update state to remove deleted order
+            setOrders((prevOrders) => prevOrders.filter((order) => order.id !== id));
+        } catch (err) {
+            setError(err.message || "Failed to delete order.");
+        }
+    };
+
     return (
         <div className="container mx-auto p-6">
             <h1 className="text-3xl font-bold mb-6">Past Orders</h1>
@@ -32,7 +45,7 @@ export default function Orders() {
             ) : (
                 <div className="space-y-6">
                     {orders.map((order) => (
-                        <div key={order.id} className="bg-white rounded shadow-lg p-6">
+                        <div key={order.id} className="bg-white rounded shadow-lg p-6 relative">
                             <div className="mb-4">
                                 <p className="text-xl font-bold mb-1">
                                     {new Date(order.date).toLocaleDateString()}
@@ -59,6 +72,14 @@ export default function Orders() {
                             <div className="text-right font-bold text-lg">
                                 Total: €{order.total.toFixed(2)}
                             </div>
+                            <div className="absolute top-0 right-0 p-4">
+                                <button
+                                    onClick={() => handleDelete(order.id)}
+                                    className="bg-red-600 hover:bg-red-800 text-white px-4 py-2 rounded"
+                                >
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -66,4 +87,3 @@ export default function Orders() {
         </div>
     );
 }
-

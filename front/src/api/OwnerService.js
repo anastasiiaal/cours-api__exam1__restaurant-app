@@ -80,6 +80,16 @@ class OwnerService {
             throw new Error(error.response?.data?.message || "Failed to delete dish");
         }
     }
+
+    async deleteOrderById(id) {
+        try {
+            const response = await axiosInstance.delete(`/owner/orders/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error deleting order:", error.response?.data || error.message);
+            throw new Error(error.response?.data?.message || "Failed to delete order");
+        }
+    }
 }
 
 export default new OwnerService();
