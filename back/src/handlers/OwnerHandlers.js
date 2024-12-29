@@ -101,6 +101,49 @@ module.exports = {
         }
     },
 
+    async updateDishById(req, res) {
+        const { id } = req.params;
+        const { name, image, price, description } = req.body;
+        const ownerId = req.user.id;
+
+        try {
+            const dish = await Dish.findByPk(id, {
+                include: {
+                    model: Restaurant,
+                    attributes: ["ownerId"],
+                },
+            });
+
+            if (!dish) {
+                return res.status(404).send({ message: "Dish not found" });
+            }
+
+            // check if current user owns the restaurant with this dish
+            if (dish.Restaurant.ownerId !== ownerId) {
+                return res.status(403).send({
+                    message: "You are not authorized to edit this dish",
+                });
+            }
+
+            // update provided values
+            if (name) dish.name = name;
+            if (image) dish.image = image;
+            if (price) dish.price = price;
+            if (description) dish.description = description;
+
+            // save the updated dish
+            await dish.save();
+
+            res.status(200).send({
+                message: "Dish updated successfully",
+                dish,
+            });
+        } catch (error) {
+            console.error("Error updating dish:", error);
+            res.status(500).send({ message: "Internal Server Error" });
+        }
+    },
+
     // fetch all restaurant orders
     async fetchRestaurantOrders(req, res) {
         try {

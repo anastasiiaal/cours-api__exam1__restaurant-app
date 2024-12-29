@@ -11,6 +11,8 @@ router.get("/dishes", OwnerHandlers.fetchRestaurantDishes);
 router.post("/dish/new", OwnerHandlers.createNewDish);
 // get one dish details
 router.get("/dish/:id", OwnerHandlers.fetchDishById);
+// edit one dish
+router.patch("/dish/:id", OwnerHandlers.updateDishById);
 // fetch all restaurant orders
 router.get("/orders", OwnerHandlers.fetchRestaurantOrders);
 
