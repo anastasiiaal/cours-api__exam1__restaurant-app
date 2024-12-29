@@ -28,7 +28,7 @@ export default function Orders() {
             )}
 
             {orders.length === 0 ? (
-                <p>No orders available.</p>
+                <p>No orders yet.</p>
             ) : (
                 <div className="space-y-6">
                     {orders.map((order) => (
