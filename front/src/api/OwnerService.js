@@ -30,6 +30,16 @@ class OwnerService {
             throw error;
         }
     }
+
+    async getRestaurantOrders() {
+        try {
+            const response = await axiosInstance.get("/owner/orders");
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching your restaurant orders:", error);
+            throw error;
+        }
+    }
 }
 
 export default new OwnerService();

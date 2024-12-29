@@ -13,6 +13,7 @@ import AddNew from "./pages/admin/AddNew";
 import OwnerDashboard from "./pages/owner/Dashboard";
 import OwnerDishes from "./pages/owner/Dishes";
 import AddDish from "./pages/owner/AddDish";
+import Orders from "./pages/owner/Orders";
 import UserLayout from "./layouts/UserLayout";
 import Restaurants from "./pages/user/Restaurants";
 import RestaurantDetails from "./pages/user/RestaurantDetails";
@@ -49,7 +50,7 @@ export default function App () {
             <Route path="dashboard" element={<OwnerDashboard />} />
             <Route path="dishes" element={<OwnerDishes />} />
             <Route path="dishes/new" element={<AddDish />} />
-            <Route path="orders" element={<div><p>Orders Here</p></div>} />
+            <Route path="orders" element={<Orders />} />
             <Route index element={<Navigate to="/dashboard" />} />
           </Route>
         )}
