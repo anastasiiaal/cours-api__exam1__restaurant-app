@@ -1,6 +1,7 @@
 const Restaurant = require("../models/Restaurant");
 const Dish = require("../models/Dish");
 const Order = require("../models/Order");
+const User = require("../models/User");
 
 module.exports = {
     // fetch restaurant details
@@ -103,21 +104,46 @@ module.exports = {
     // fetch all restaurant orders
     async fetchRestaurantOrders(req, res) {
         try {
+            // current user/owner
+            const ownerId = req.user.id;
+
             const restaurant = await Restaurant.findOne({
-                where: { ownerId: req.user.id },
+                where: { ownerId },
             });
 
             if (!restaurant) {
                 return res.status(404).send({ message: "Restaurant not found" });
             }
 
+            // fetch all restaurant's orders
             const orders = await Order.findAll({
                 where: { restaurantId: restaurant.id },
+                include: [
+                    {
+                        model: User,
+                        attributes: ["id", "name", "email"], // client details
+                    },
+                    /**
+                     *  ⚠️  I do not include Dish here because i pass the JSON value 
+                     *      in case item name/price changes so it does not affect the total price later
+                     *      but this part could be decommented together with related association
+                     *      in /src/models/index.js
+                    */ 
+                    // {
+                    //     model: Dish,
+                    //     through: { attributes: [] },
+                    //     attributes: ["id", "name", "price", "image", "description"],
+                    // },
+                ],
+                order: [["date", "DESC"]], // recent first
             });
 
-            res.status(200).send(orders);
+            res.status(200).send({
+                message: "Orders fetched successfully",
+                data: orders,
+            });
         } catch (error) {
-            console.error("Error fetching orders:", error);
+            console.error("Error fetching restaurant orders:", error);
             res.status(500).send({ message: "Internal Server Error" });
         }
     },

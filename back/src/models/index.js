@@ -12,3 +12,9 @@ Dish.belongsTo(Restaurant, { foreignKey: "restaurantId" });
 
 Restaurant.hasMany(Order, { foreignKey: "restaurantId", onDelete: "CASCADE" });
 Order.belongsTo(Restaurant, { foreignKey: "restaurantId" });
+
+User.hasMany(Order, { foreignKey: "userId", onDelete: "CASCADE" });
+Order.belongsTo(User, { foreignKey: "userId" });
+
+// Order.belongsToMany(Dish, { through: "OrderDish", foreignKey: "orderId", onDelete: "CASCADE" });
+// Dish.belongsToMany(Order, { through: "OrderDish", foreignKey: "dishId", onDelete: "CASCADE" });
