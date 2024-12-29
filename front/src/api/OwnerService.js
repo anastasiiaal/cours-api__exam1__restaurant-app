@@ -60,6 +60,16 @@ class OwnerService {
             throw error;
         }
     }
+
+    async deleteDishById(id) {
+        try {
+            const response = await axiosInstance.delete(`/owner/dish/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error deleting dish:", error.response?.data || error.message);
+            throw new Error(error.response?.data?.message || "Failed to delete dish");
+        }
+    }
 }
 
 export default new OwnerService();

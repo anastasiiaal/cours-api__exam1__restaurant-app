@@ -54,6 +54,19 @@ export default function EditDish() {
         }
     };
 
+    const handleDelete = async () => {
+        if (!window.confirm("Are you sure you want to delete this dish?")) return;
+
+        try {
+            await OwnerService.deleteDishById(id);
+            alert("Dish deleted successfully!");
+            navigate("/dishes"); // redirect to list after deletion
+        } catch (error) {
+            alert(error.message || "Failed to delete dish.");
+            console.error(error.message);
+        }
+    };
+
     if (!dish) return <p>Loading...</p>;
 
     return (
@@ -107,12 +120,8 @@ export default function EditDish() {
                     ></textarea>
                 </div>
 
-                <button
-                    type="submit"
-                    className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 w-full"
-                >
-                    Save Changes
-                </button>
+                <button type="submit">Save changes</button>
+                <button onClick={handleDelete} className="bg-red-600 hover:bg-red-800">Delete dish</button>
             </form>
         </div>
     );
