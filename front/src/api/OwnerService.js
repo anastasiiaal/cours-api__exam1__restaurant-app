@@ -11,6 +11,16 @@ class OwnerService {
         }
     }
 
+    async updateRestaurant(data) {
+        try {
+            const response = await axiosInstance.patch(`/owner/restaurant`, data);
+            return response.data;
+        } catch (error) {
+            console.error("Error while editing restaurant:", error);
+            throw error;
+        }
+    }
+
     async getDishes() {
         try {
             const response = await axiosInstance.get("/owner/dishes");

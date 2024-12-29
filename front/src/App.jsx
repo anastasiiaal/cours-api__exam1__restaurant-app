@@ -11,6 +11,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AddNew from "./pages/admin/AddNew";
 import OwnerDashboard from "./pages/owner/Dashboard";
+import EditRestaurant from "./pages/owner/EditRestaurant";
 import OwnerDishes from "./pages/owner/Dishes";
 import AddDish from "./pages/owner/AddDish";
 import Orders from "./pages/owner/Orders";
@@ -49,6 +50,7 @@ export default function App () {
         {isAuthenticated && user?.role === "OWNER" && (
           <Route path="/" element={<DashboardLayout />}>
             <Route path="dashboard" element={<OwnerDashboard />} />
+            <Route path="edit-restaurant" element={<EditRestaurant />} />
             <Route path="dishes" element={<OwnerDishes />} />
             <Route path="dishes/new" element={<AddDish />} />
             <Route path="orders" element={<Orders />} />

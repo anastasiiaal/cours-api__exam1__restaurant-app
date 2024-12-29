@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import OwnerService from "../../api/OwnerService";
 
 export default function Dashboard() {
@@ -34,7 +35,7 @@ export default function Dashboard() {
                     <p>
                         {restaurant.zipCode}, {restaurant.city}
                     </p>
-                    <a href="/" className="w-48 text-center bg-orange-600 border text-white hover:bg-orange-700 hover:text-white py-2 px-4 rounded transition">Edit</a>
+                    <Link to={"/edit-restaurant"} className="w-48 text-center bg-orange-600 border text-white hover:bg-orange-700 hover:text-white py-2 px-4 rounded transition">Edit</Link>
                 </div>
             ) : (
                 !error && <p>Loading restaurant data...</p>
