@@ -19,5 +19,7 @@ router.patch("/dish/:id", OwnerHandlers.updateDishById);
 router.delete("/dish/:id", OwnerHandlers.deleteDishById);
 // fetch all restaurant orders
 router.get("/orders", OwnerHandlers.fetchRestaurantOrders);
+// delete specific order
+router.delete("/orders/:id", OwnerHandlers.deleteOrderById);
 
 module.exports = router;

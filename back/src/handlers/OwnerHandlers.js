@@ -261,4 +261,40 @@ module.exports = {
             res.status(500).send({ message: "Internal Server Error" });
         }
     },
+
+    // delete specific order
+    async deleteOrderById(req, res) {
+        const { id } = req.params;
+        const ownerId = req.user.id;
+    
+        try {
+            // Fetch the order
+            const order = await Order.findByPk(id, {
+                include: {
+                    model: Restaurant,
+                    attributes: ["id", "ownerId"], // restaurant data to validate ownership
+                },
+            });
+    
+            // check if the order exists
+            if (!order) {
+                return res.status(404).send({ message: "Order not found" });
+            }
+    
+            // check if the current user owns the restaurant related to the order
+            if (order.Restaurant.ownerId !== ownerId) {
+                return res.status(403).send({
+                    message: "You are not authorized to delete this order",
+                });
+            }
+    
+            // delete the order
+            await order.destroy();
+    
+            res.status(200).send({ message: "Order deleted successfully" });
+        } catch (error) {
+            console.error("Error deleting order:", error);
+            res.status(500).send({ message: "Internal Server Error" });
+        }
+    }
 };
