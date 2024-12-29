@@ -5,6 +5,8 @@ const router = Router();
 
 // fetch restaurant details
 router.get("/restaurant", OwnerHandlers.fetchRestaurantDetails);
+// update restaurant details
+router.patch("/restaurant", OwnerHandlers.updateRestaurantDetails);
 // fetch all restaurant dishes
 router.get("/dishes", OwnerHandlers.fetchRestaurantDishes);
 // create a new dish for owner's restaurant

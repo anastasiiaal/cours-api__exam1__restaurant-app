@@ -22,6 +22,45 @@ module.exports = {
         }
     },
 
+    // update restaurant details
+    async updateRestaurantDetails (req, res) {
+        const { name, address, zipCode, city, image } = req.body;
+        const ownerId = req.user.id;
+
+        try {
+            const restaurant = await Restaurant.findOne({ where: { ownerId } });
+
+            if (!restaurant) {
+                return res.status(404).send({ message: "Restaurant not found" });
+            }
+
+            // check if current user owns the restaurant
+            if (restaurant.ownerId !== ownerId) {
+                return res.status(403).send({
+                    message: "You are not authorized to edit this restaurant",
+                });
+            }
+
+            // update provided values
+            if (name) restaurant.name = name;
+            if (image) restaurant.image = image;
+            if (address) restaurant.address = address;
+            if (zipCode) restaurant.zipCode = zipCode;
+            if (city) restaurant.city = city;
+
+            // save the updated restaurant
+            await restaurant.save();
+
+            res.status(200).send({
+                message: "Restaurant updated successfully",
+                restaurant,
+            });
+        } catch (error) {
+            console.error("Error updating restaurant:", error);
+            res.status(500).send({ message: "Internal Server Error" });
+        }
+    },
+
     // fetch all restaurant dishes
     async fetchRestaurantDishes(req, res) {
         try {
